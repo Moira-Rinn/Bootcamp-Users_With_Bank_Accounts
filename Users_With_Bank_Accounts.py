@@ -1,33 +1,34 @@
 class User:
+    acct = []
+
     def __init__(self, name, age, dob, email):
         self.name = name
         self.age = age
         self.dob = dob
         self.email = email
-        self.account = Bank(int_rate=0.02, balance=0)
+        User.acct.append(Bank(int_rate=0.02, balance=0))
 
-    def make_deposit(self, amount):
-        return self.account.deposit(amount)
+    def make_deposit(self, x, amount):
+        return User.acct[x].deposit(amount)
 
-    def make_withdral(self, amount):
-        return self.account.withdraw(amount)
+    def make_withdral(self, x, amount):
+        return self.acct[x].withdraw(amount)
 
-    def display_user_balance(self):
-        return self.account.display_acct_balance()
+    def display_user_balance(self, x):
+        return self.acct[x].display_acct_balance()
 
-    def transfer_money(self, other_user, amount):
-        self.account.withdraw(amount)
-        other_user.account.deposit(amount)
+    def transfer_money(self, x, amount, y, other_user):
+        self.acct[x].withdraw(amount)
+        other_user.acct[y].deposit(amount)
         return self
 
-    def open_account(self, amount):
-        self.account.create_account(amount)
+    def open_account(self):
+        User.acct.append(Bank(int_rate=0.02, balance=0))
 
 
 class Bank:
     bank_name = 'Liberation Cooperative'
     all_accounts = []
-    acct_num = 1
 
     def __init__(self, int_rate, balance=0):
         self.balance = balance
@@ -50,9 +51,7 @@ class Bank:
             self.balance += self.balance * self.int_rate
 
     def create_account(amount):
-
-        Bank.all_accounts.append(f"acct_"{str(Bank.acct_num)})
-        Bank.acct_num += 1
+        return f"acct_{str(Bank.acct_num)}"
 
     @classmethod
     def all_balances(cls):
@@ -74,8 +73,11 @@ rachael = User("Rachael Anderson", 19, "October 31st, 2002",
 liz = User("Elibeth McKnight", 43, "March 23rd, 1978",
            "EMcKnight@gmail.com")
 
-sara.make_deposit(1000)
-print(sara.display_user_balance())
+sara.make_deposit(0, 1000)
+print(sara.display_user_balance(0))
+sara.open_account()
+print(sara.display_user_balance(1))
+
 
 liz.make_deposit(10000)
 print(liz.display_user_balance())
